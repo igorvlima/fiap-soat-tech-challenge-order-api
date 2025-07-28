@@ -62,23 +62,9 @@ tasks.named('test') {
 
 
 jacocoTestReport {
-    dependsOn test
-
     reports {
-        xml.required.set(true)
-        html.required.set(true)
-
+        xml.required = true
+        csv.required = true
+        html.required = true
     }
-
-    def fileFilter = [
-            'com/example/fiapsoattechchallengeorderapi/adapters/outbound/entities/**',
-            'com/example/fiapsoattechchallengeorderapi/adapters/outbound/client/customer/response/**',
-            'com/example/fiapsoattechchallengeorderapi/adapters/outbound/client/product/response/**'
-    ]
-
-    def filteredClassDirs = files(classDirectories.files.collect {
-        fileTree(dir: it, exclude: fileFilter)
-    })
-
-    classDirectories.setFrom(filteredClassDirs)
 }
