@@ -47,12 +47,10 @@ sonar {
         property "sonar.organization", "igorvlima"
         property "sonar.host.url", "https://sonarcloud.io"
         property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
-        properties {
-            property "sonar.exclusions",
-                    "**/com/example/fiapsoattechchallengeorderapi/adapters/outbound/entities/**," +
-                            "**/com/example/fiapsoattechchallengeorderapi/adapters/outbound/client/customer/response/**," +
-                            "**/com/example/fiapsoattechchallengeorderapi/adapters/outbound/client/product/response/**"
-        }
+        property "sonar.exclusions",
+                "**/com/example/fiapsoattechchallengeorderapi/adapters/outbound/entities/**," +
+                        "**/com/example/fiapsoattechchallengeorderapi/adapters/outbound/client/customer/response/**," +
+                        "**/com/example/fiapsoattechchallengeorderapi/adapters/outbound/client/product/response/**"
     }
 }
 
@@ -60,6 +58,16 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+def excludedDirs = [
+        'com/example/fiapsoattechchallengeorderapi/adapters/outbound/entities/**',
+        'com/example/fiapsoattechchallengeorderapi/adapters/outbound/client/customer/response/**',
+        'com/example/fiapsoattechchallengeorderapi/adapters/outbound/client/product/response/**'
+]
+
+def mainClasses = fileTree(
+        dir: "${buildDir}/classes/java/main",
+        excludes: excludedDirs
+)
 
 jacocoTestReport {
     reports {
@@ -67,4 +75,6 @@ jacocoTestReport {
         csv.required = true
         html.required = true
     }
+
+    classDirectories.setFrom(mainClasses)
 }
