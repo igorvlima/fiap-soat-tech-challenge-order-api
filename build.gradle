@@ -60,23 +60,25 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-def excludedDirs = [
-        'com/example/fiapsoattechchallengeorderapi/adapters/outbound/entities/**',
-        'com/example/fiapsoattechchallengeorderapi/adapters/outbound/client/customer/response/**',
-        'com/example/fiapsoattechchallengeorderapi/adapters/outbound/client/product/response/**'
-]
-
-def mainClasses = fileTree(
-        dir: "${buildDir}/classes/java/main",
-        excludes: excludedDirs
-)
 
 jacocoTestReport {
+    dependsOn test
+
     reports {
-        xml.required = true
-        csv.required = true
-        html.required = true
+        xml.required.set(true)
+        html.required.set(true)
+
     }
 
-    classDirectories.setFrom(mainClasses)
+    def fileFilter = [
+            'com/example/fiapsoattechchallengeorderapi/adapters/outbound/entities/**',
+            'com/example/fiapsoattechchallengeorderapi/adapters/outbound/client/customer/response/**',
+            'com/example/fiapsoattechchallengeorderapi/adapters/outbound/client/product/response/**'
+    ]
+
+    def filteredClassDirs = files(classDirectories.files.collect {
+        fileTree(dir: it, exclude: fileFilter)
+    })
+
+    classDirectories.setFrom(filteredClassDirs)
 }
