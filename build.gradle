@@ -60,6 +60,17 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+def excludedDirs = [
+        'com/example/fiapsoattechchallengeorderapi/adapters/outbound/entities/**',
+        'com/example/fiapsoattechchallengeorderapi/adapters/outbound/client/customer/response/**',
+        'com/example/fiapsoattechchallengeorderapi/adapters/outbound/client/product/response/**'
+]
+
+def mainClasses = fileTree(
+        dir: "${buildDir}/classes/java/main",
+        excludes: excludedDirs
+)
+
 jacocoTestReport {
     reports {
         xml.required = true
@@ -67,13 +78,5 @@ jacocoTestReport {
         html.required = true
     }
 
-    classDirectories.setFrom(
-            files(classDirectories.files.collect {
-                fileTree(dir: it, exclude: [
-                        'com/example/fiapsoattechchallengeorderapi/adapters/outbound/entities/**',
-                        'com/example/fiapsoattechchallengeorderapi/adapters/outbound/client/customer/response/**',
-                        'com/example/fiapsoattechchallengeorderapi/adapters/outbound/client/product/response/**'
-                ])
-            })
-    )
+    classDirectories.setFrom(mainClasses)
 }
