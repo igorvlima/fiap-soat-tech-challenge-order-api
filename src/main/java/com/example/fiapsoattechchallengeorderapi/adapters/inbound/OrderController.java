@@ -37,7 +37,7 @@ public class OrderController {
     }
 
     @PatchMapping("/cancel/{id}")
-    public OrderDTO updateOrderPayment(@PathVariable Long id) {
+    public OrderDTO cancelOrder(@PathVariable Long id) {
         return orderUseCase.cancelOrder(id);
     }
 
