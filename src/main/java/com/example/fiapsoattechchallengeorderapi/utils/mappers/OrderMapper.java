@@ -88,7 +88,6 @@ public class OrderMapper {
         return order;
     }
 
-
     public List<Order> jpaToDomainList(List<JpaOrderEntity> jpaOrderEntities, List<JpaOrderItemEntity> jpaOrderItemEntities) {
         return jpaOrderEntities.stream()
                 .map(jpaOrderEntity -> jpaToDomain(jpaOrderEntity, jpaOrderItemEntities))
